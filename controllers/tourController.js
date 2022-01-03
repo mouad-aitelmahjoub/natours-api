@@ -38,13 +38,9 @@ exports.getTour = async (req, res) => {
 }
 
 exports.createTour = async (req, res) => {
-  const { name, price, rating } = req.body
+  const { name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, price, summary, description, imageCover, images, startDates } = req.body
   try {
-    const newTour = await Tour.create({
-      name,
-      price,
-      rating,
-    })
+    const newTour = await Tour.create({ name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, price, summary, description, imageCover, images, startDates })
 
     res.status(201).json({
       status: "success",
