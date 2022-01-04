@@ -1,9 +1,15 @@
-const res = require("express/lib/response")
 const Tour = require("../models/tourModel")
+const APIFeatures = require("../utils/apiFeatures")
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find()
+    const features = new APIFeatures(Tour.find(), req.query) //
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate()
+
+    const tours = await features.query
 
     res.status(200).json({
       status: "success",
@@ -38,7 +44,20 @@ exports.getTour = async (req, res) => {
 }
 
 exports.createTour = async (req, res) => {
-  const { name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, price, summary, description, imageCover, images, startDates } = req.body
+  const {
+    name, //
+    duration,
+    maxGroupSize,
+    difficulty,
+    ratingsAverage,
+    ratingsQuantity,
+    price,
+    summary,
+    description,
+    imageCover,
+    images,
+    startDates,
+  } = req.body
   try {
     const newTour = await Tour.create({ name, duration, maxGroupSize, difficulty, ratingsAverage, ratingsQuantity, price, summary, description, imageCover, images, startDates })
 
