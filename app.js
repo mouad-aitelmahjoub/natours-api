@@ -24,7 +24,6 @@ app.use("/api/v1/tours", tourRoutes)
 //Unhandled routes
 app.all("*", (req, res, next) => {
   const err = new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
-
   next(err)
 })
 
@@ -35,4 +34,18 @@ app.use(globalErrorHandler)
 const PORT = 5000
 app.listen(PORT, () => {
   console.log(`✔✔✔ App is running on port :  ${PORT} ✨🌟⭐`.bgGreen)
+})
+
+//Unhandled Rejections
+process.on("unhandledRejection", (err) => {
+  console.log("Unhanled Rejection 💥".bgRed)
+  console.log(err.name.bgRed, err.message.bgRed)
+  process.exit(1)
+})
+
+//Uncaught Exception
+process.on("uncaughtException", (err) => {
+  console.log("Uncaught Exception 💥".bgRed)
+  console.log(`${err.name}: ${err.message.bgRed}`)
+  process.exit(1)
 })
