@@ -5,6 +5,7 @@ const AppError = require("./utils/appError")
 const globalErrorHandler = require("./controllers/errorController")
 const colors = require("colors")
 const tourRoutes = require("./routes/tourRoutes")
+const userRoutes = require("./routes/userRoutes")
 
 //Dotenv file
 dotenv.config()
@@ -20,6 +21,7 @@ app.use(express.json())
 
 //Configure Routes
 app.use("/api/v1/tours", tourRoutes)
+app.use("/api/v1/users", userRoutes)
 
 //Unhandled routes
 app.all("*", (req, res, next) => {
