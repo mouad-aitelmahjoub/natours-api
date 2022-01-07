@@ -17,6 +17,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
+    role: req.body.role,
   })
 
   const token = signToken(newUser._id)
@@ -67,7 +68,22 @@ exports.protect = catchAsync(async (req, res, next) => {
   //2) Token verification
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
-  //3) Grant access to protected route
-  req.userId = decoded.id
+  //3) Check if the user exists
+  const currentUser = await User.findById(decoded.id)
+  if (!currentUser) {
+    return next(new AppError("This user doesn't exist anymore! Please signup or login to get access", 401))
+  }
+
+  //4) Grant access to protected route
+  req.user = currentUser
   next()
 })
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError("You do not have permission to perform this action", 403))
+    }
+    next()
+  }
+}
