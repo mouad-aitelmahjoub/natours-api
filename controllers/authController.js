@@ -14,6 +14,12 @@ const signToken = (id) => {
 const createAndSendToken = (user, statusCode, res) => {
   const token = signToken(user._id)
 
+  res.cookie("jwt", token, {
+    maxAge: process.env.JWT_EXPIRES_IN,
+    httpOnly: true,
+    //secure: true,
+  })
+
   res.status(statusCode).json({
     status: "success",
     token,
@@ -60,7 +66,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1]
   }
-
   if (!token) {
     return next(new AppError("You are not logged in! Please login to get access", 401))
   }
