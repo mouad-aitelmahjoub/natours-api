@@ -37,6 +37,11 @@ const userSchema = new mongoose.Schema({
       message: "Your passwords dont match",
     },
   },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 })
 
 userSchema.pre("save", async function (next) {
@@ -49,6 +54,12 @@ userSchema.pre("save", async function (next) {
   //Delete confirmPassword field in DB
   this.confirmPassword = undefined
 
+  next()
+})
+
+userSchema.pre(/^find/, function (next) {
+  //this points to current query
+  this.find({ active: { $ne: false } })
   next()
 })
 

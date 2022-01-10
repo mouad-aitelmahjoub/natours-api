@@ -26,12 +26,19 @@ router //
     userController.updateMe
   )
 
+router //
+  .route("/deleteMe")
+  .delete(
+    authController.protect, //
+    userController.deleteMe
+  )
+
 router
   .route("/") //
   .get(userController.getAllUsers) /*
   .post(tourController.createTour)*/
 
-router.route("/:id") /*
+/*router.route("/:id") 
   .get(tourController.getTour)
   .patch(tourController.updateTour)
   .delete(tourController.deleteTour)*/
