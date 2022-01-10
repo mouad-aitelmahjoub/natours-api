@@ -12,6 +12,13 @@ router //
   .route("/login")
   .post(authController.login)
 
+router //
+  .route("/updatePassword")
+  .patch(
+    authController.protect, //
+    authController.updatePassword
+  )
+
 router
   .route("/") //
   .get(userController.getAllUsers) /*
