@@ -1,9 +1,12 @@
 const express = require("express")
 const connectDB = require("./config/db")
+const colors = require("colors")
 const dotenv = require("dotenv")
+const mongoSanitize = require("express-mongo-sanitize")
+const xss = require("xss-clean")
+
 const AppError = require("./utils/appError")
 const globalErrorHandler = require("./controllers/errorController")
-const colors = require("colors")
 const tourRoutes = require("./routes/tourRoutes")
 const userRoutes = require("./routes/userRoutes")
 
@@ -18,6 +21,12 @@ const app = express()
 
 //Use JSON middleware
 app.use(express.json())
+
+//Data Sanitization against NoSQL query injection
+app.use(mongoSanitize())
+
+//Data Sanitization against XSS
+app.use(xss())
 
 //Configure Routes
 app.use("/api/v1/tours", tourRoutes)
