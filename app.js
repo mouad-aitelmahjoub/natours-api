@@ -9,6 +9,7 @@ const AppError = require("./utils/appError")
 const globalErrorHandler = require("./controllers/errorController")
 const tourRoutes = require("./routes/tourRoutes")
 const userRoutes = require("./routes/userRoutes")
+const reviewRoutes = require("./routes/reviewRoutes")
 
 //Dotenv file
 dotenv.config()
@@ -31,6 +32,7 @@ app.use(xss())
 //Configure Routes
 app.use("/api/v1/tours", tourRoutes)
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/reviews", reviewRoutes)
 
 //Unhandled routes
 app.all("*", (req, res, next) => {
