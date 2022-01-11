@@ -35,35 +35,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
 })
 
 exports.createTour = catchAsync(async (req, res, next) => {
-  const {
-    name, //
-    duration,
-    maxGroupSize,
-    difficulty,
-    ratingsAverage,
-    ratingsQuantity,
-    price,
-    summary,
-    description,
-    imageCover,
-    images,
-    startDates,
-  } = req.body
-
-  const newTour = await Tour.create({
-    name, //
-    duration,
-    maxGroupSize,
-    difficulty,
-    ratingsAverage,
-    ratingsQuantity,
-    price,
-    summary,
-    description,
-    imageCover,
-    images,
-    startDates,
-  })
+  const newTour = await Tour.create(req.body)
 
   res.status(201).json({
     status: "success",
